@@ -1,0 +1,60 @@
+---
+
+- hosts: all
+  user: vagrant
+  sudo: True
+
+  tasks:
+    - name: update apt
+      action: command /usr/bin/apt-get update
+
+    - name: installing zsh
+      apt: pkg=$item
+      with_items:
+        - build-essential
+        - tree
+        - curl
+        - zsh
+        - htop
+        - sudo
+        - iftop
+        - tcpdump
+        - mc
+        - wget
+        - vim
+        - tmux
+        - facter
+        - git
+        - git-core
+        - wget
+
+    - name: install python-software-properties
+      action: apt pkg=python-software-properties state=present
+
+    - name: install web server packages
+      action: apt pkg=$item state=installed
+      with_items:
+        - build-essential
+        - libpq-dev
+        - libmysqlclient-dev
+        - libxml2-dev
+        - libjpeg62
+        - libjpeg62-dev
+        - libfreetype6
+        - libfreetype6-dev
+        - zlib1g-dev
+        - mysql-client
+        - python-dev
+        - python-setuptools
+        - python-imaging
+        - python-mysqldb
+        - python-psycopg2
+        - nginx
+
+    - name: install pip
+      action: easy_install name=pip
+
+    - name: install various libraries with pip
+      action: pip name=$item state=present
+      with_items:
+        - virtualenv
