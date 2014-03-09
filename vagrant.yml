@@ -43,6 +43,7 @@
         - libfreetype6
         - libfreetype6-dev
         - zlib1g-dev
+        - mysql-server
         - mysql-client
         - python-dev
         - python-setuptools
