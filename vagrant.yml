@@ -59,3 +59,4 @@
       action: pip name=$item state=present
       with_items:
         - virtualenv
+        - nose
