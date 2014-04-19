@@ -27,6 +27,7 @@
         - git
         - git-core
         - wget
+        - gawk
 
     - name: install python-software-properties
       action: apt pkg=python-software-properties state=present
@@ -60,3 +61,75 @@
       with_items:
         - virtualenv
         - nose
+        - peewee
+        - ipython
+        - tornado
+        - pyzmq
+        - flask
+        - requests
+        - pandas
+        - numpy
+        - pyaml
+
+    - name: Add Brightbox PPA
+      action: apt_repository repo=ppa:brightbox/ruby-ng-experimental
+
+    - name: Install Ruby
+      apt: name=$item state=latest update_cache=yes
+      with_items:
+          - ruby2.0
+          - ruby2.0-dev
+          - ruby2.0-doc
+
+    - name: install various libraries with gem
+      action: gem name=$item state=present
+      with_items:
+        - getpocket
+        - pry
+
+    - name: Node.js | Package prerequisites for node.js
+      action: apt pkg=python-software-properties state=installed
+      tags: nodejs
+
+    - name: Node.js | Add the node.js PPA
+      action: command add-apt-repository -y ppa:chris-lea/node.js creates=/etc/apt/sources.list.d/chris-lea-node_js-precise.list
+      tags: nodejs
+
+    - name: Node.js | Update the apt cache for the new repository
+      action: apt update-cache=yes
+      tags: nodejs
+
+    - name: Node.js | Install nodejs and npm
+      action: apt pkg={{ item }} state=installed
+      tags: nodejs
+      with_items:
+        - nodejs
+
+    - name: Install JAVA Checkstyle
+      apt: name=$item state=latest update_cache=yes
+      with_items:
+          - checkstyle
+
+    - name: ensure PHP PPA is enabled
+      apt_repository: repo='ppa:ondrej/php5'
+
+    - name: update apt update_cache
+      apt: update_cache=yes
+
+    - name: ensure required PHP extensions are installed
+      apt: name={{ item }} state=latest
+      with_items:
+        - php-console-table
+        - php-pear
+        - php5-cli
+        - php5-common
+        - php5-curl
+        - php5-dev
+        - php5-gd
+        - php5-intl
+        - php5-json
+        - php5-mcrypt
+        - php5-mysql
+        - php5-sqlite
+        - php5-xdebug
+        - libapache2-mod-php5
